@@ -1,0 +1,88 @@
+// srs till 1st commit 
+Software Requirements Specification (SRS) for Laptop Price Predictor
+1. Introduction
+
+
+
+
+1.1 Purpose
+
+
+The purpose of the Laptop Price Predictor project is to develop a web application powered by a machine learning model that can predict the market price of a laptop based on its desired configuration. This application aims to assist students and working professionals in determining the appropriate price point for a new laptop with specific features.
+
+
+1.2 Scope
+
+
+The project encompasses the entire machine learning workflow, from data preprocessing and exploratory data analysis (EDA) to feature engineering, model training and evaluation, and finally, deployment of a web application. The web application will serve as a user interface for users to input laptop configurations and receive a price prediction.
+
+
+1.3 Target Audience
+
+The primary users of this system are students and working professionals who are looking to purchase a new laptop and wish to understand the market price for specific configurations.
+
+
+
+
+
+2. Overall Description
+
+
+2.1 Product Perspective
+
+The Laptop Price Predictor is a standalone web application. It integrates a machine learning model as its backend, which performs the core price prediction functionality. The frontend is a simple graphical user interface (GUI) for user interaction.
+
+
+2.2 System Architecture (High-Level)
+
+The system broadly consists of:
+• Data Layer: The laptop_df.csv dataset.
+• Backend (Machine Learning Model): Python-based machine learning model developed using libraries like scikit-learn, numpy, pandas, etc.. This includes data preprocessing, feature engineering, and the trained prediction model.
+• Frontend (Web Application): A Streamlit-based web interface for user input and displaying predictions.
+• Deployment Platform: Heroku (or similar cloud platform) for hosting the web application.
+
+
+
+
+
+
+2.3 User Interface Description
+The web application provides a simple and intuitive user interface. Users will be presented with a series of basic questions and input fields to specify the desired laptop configuration.
+Key UI elements include:
+• Dropdown menus for categorical features (e.g., Brand, Type Name, CPU Brand, GPU Brand, Operating System).
+• Number input fields for numerical features (e.g., RAM in GB, Weight in kg, Screen Size in inches, HDD/SSD capacity in GB).
+• Select boxes for binary features (e.g., Touchscreen: Yes/No, IPS Display: Yes/No).
+• A pre-defined list of common screen resolutions.
+• A "Predict Price" button to initiate the prediction process.
+• A display area for the predicted price, presented in Indian Rupees.
+
+
+
+
+
+
+
+
+
+3. Functional Requirements
+The system shall perform the following functions:
+3.1 Data Preprocessing
+• FR1.1: The system shall import the laptop_df.csv dataset.
+• FR1.2: The system shall drop irrelevant columns such as Unnamed: 0.
+• FR1.3: The system shall clean the 'RAM' column by removing "GB" and converting the data type to integer.
+• FR1.4: The system shall clean the 'Weight' column by removing "kg" and converting the data type to float.
+• FR1.5: The system shall check for and handle duplicate rows (though none were found in the provided dataset).
+• FR1.6: The system shall check for and handle missing values (though none were found in the provided dataset).
+3.2 Exploratory Data Analysis (EDA)
+• FR2.1: The system shall analyze the distribution of laptop prices, noting its skewed nature.
+• FR2.2: The system shall analyze the distribution of laptop brands, identifying popular brands (e.g., Lenovo, Dell, HP).
+• FR2.3: The system shall calculate and visualize the average price per laptop brand.
+• FR2.4: The system shall analyze the distribution of laptop types (e.g., Notebook, Gaming, Ultrabook).
+• FR2.5: The system shall calculate and visualize the average price per laptop type.
+• FR2.6: The system shall analyze the distribution of screen sizes.
+• FR2.7: The system shall visualize the relationship between screen size and price
+
+
+                                                29/8/25
+--------------------------------------------------------------------------------------------------------------------------------------------
+
