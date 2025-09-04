@@ -1,0 +1,63 @@
+   
+  
+  
+my main goal -->paisa(money/price)...
+  
+
+ 
+ attributes i am considering lets see which one is
+ worth to be in our dataset and which one not..
+
+  Company          object 
+   TypeName         object 
+ Inches              float64
+ ScreenResolution     object 
+  Cpu                 object
+  Ram                 object 
+  Memory             object 
+ Gpu                 object 
+  OpSys              object 
+ Weight              object 
+  Price              float64
+
+
+
+
+  # how will i check that this thing is worth to keep?
+  # by plotting(visulation)
+  # by correaltion... ( math stats)  differnets correaltion coeefficients 
+  # by regression lines ( etc) seaborn...
+
+
+  # later
+  Use correlation for numeric vs numeric
+  group comparisons / ANOVA for categorical vs numeric
+  chi-square test for categorical vs categorical
+
+
+ feature engineering see 2 columns add bhi kiya...
+
+
+ // data cleaning done 
+ // eda doing
+
+
+
+ // mutli collinarity check heatmap...
+
+ F= 
+ Variance WITHIN groups
+ Variance BETWEEN groups
+
+
+ F-statistic is large  --> so that is statically significnat 
+ -statistic is small --> not statically sig ificant 
+
+// from f-satistic find p-value(probability)
+// i would take 95 percent confidence interval...
+
+
+
+​
+ 
+
