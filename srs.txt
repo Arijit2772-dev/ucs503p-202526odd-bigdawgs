@@ -1,7 +1,6 @@
 // srs till 1st commit 
 
 
-dataset_link :--> https://www.kaggle.com/datasets/ganeshmohane/laptop-datacsv
 Software Requirements Specification (SRS) for Laptop Price Predictor
 1. Introduction
 
