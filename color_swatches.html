@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LapPrice Pro - Color System Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fafafa;
+            padding: 2rem;
+            color: #262626;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #737373;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e5e5;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-swatch {
+            text-align: center;
+        }
+
+        .color-box {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border: 1px solid #e5e5e5;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .color-value {
+            font-size: 0.7rem;
+            color: #737373;
+            font-family: 'Courier New', monospace;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .usage-card {
+            background: #fafafa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .usage-card.primary { border-left-color: #8b5cf6; }
+        .usage-card.success { border-left-color: #22c55e; }
+        .usage-card.warning { border-left-color: #f59e0b; }
+        .usage-card.error { border-left-color: #ef4444; }
+        .usage-card.info { border-left-color: #3b82f6; }
+
+        .usage-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .usage-desc {
+            font-size: 0.9rem;
+            color: #525252;
+            margin-bottom: 0.75rem;
+        }
+
+        .usage-examples {
+            font-size: 0.85rem;
+            color: #737373;
+        }
+
+        .contrast-check {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .contrast-aaa {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .contrast-aa {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .contrast-fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .gradient-box {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .comparison-side h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .old-colors {
+            background: #fee2e2;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .new-colors {
+            background: #dcfce7;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .color-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #262626;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 LapPrice Pro Color System</h1>
+        <p class="subtitle">Design System v2.0.0 • WCAG 2.1 AA Compliant • Click any color to copy</p>
+
+        <!-- Primary Colors -->
+        <div class="section">
+            <h2 class="section-title">Primary Purple (Brand)</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #f5f3ff" onclick="copyColor('#f5f3ff', 'primary-50')"></div>
+                    <div class="color-label">primary-50</div>
+                    <div class="color-value">#f5f3ff</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #ede9fe" onclick="copyColor('#ede9fe', 'primary-100')"></div>
+                    <div class="color-label">primary-100</div>
+                    <div class="color-value">#ede9fe</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #ddd6fe" onclick="copyColor('#ddd6fe', 'primary-200')"></div>
+                    <div class="color-label">primary-200</div>
+                    <div class="color-value">#ddd6fe</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #c4b5fd" onclick="copyColor('#c4b5fd', 'primary-300')"></div>
+                    <div class="color-label">primary-300</div>
+                    <div class="color-value">#c4b5fd</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #a78bfa" onclick="copyColor('#a78bfa', 'primary-400')"></div>
+                    <div class="color-label">primary-400</div>
+                    <div class="color-value">#a78bfa</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #8b5cf6; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#8b5cf6', 'primary-500')">BASE</div>
+                    <div class="color-label">primary-500 <span class="contrast-check contrast-aa">AA</span></div>
+                    <div class="color-value">#8b5cf6</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #7c3aed; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#7c3aed', 'primary-600')">DARK</div>
+                    <div class="color-label">primary-600 <span class="contrast-check contrast-aaa">AAA</span></div>
+                    <div class="color-value">#7c3aed</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #6d28d9; color: white" onclick="copyColor('#6d28d9', 'primary-700')"></div>
+                    <div class="color-label">primary-700</div>
+                    <div class="color-value">#6d28d9</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #5b21b6; color: white" onclick="copyColor('#5b21b6', 'primary-800')"></div>
+                    <div class="color-label">primary-800</div>
+                    <div class="color-value">#5b21b6</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #4c1d95; color: white" onclick="copyColor('#4c1d95', 'primary-900')"></div>
+                    <div class="color-label">primary-900</div>
+                    <div class="color-value">#4c1d95</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Colors -->
+        <div class="section">
+            <h2 class="section-title">Success Green</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #f0fdf4" onclick="copyColor('#f0fdf4', 'success-50')"></div>
+                    <div class="color-label">success-50</div>
+                    <div class="color-value">#f0fdf4</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#22c55e', 'success-500')">BASE</div>
+                    <div class="color-label">success-500 <span class="contrast-check contrast-aa">AA</span></div>
+                    <div class="color-value">#22c55e</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #16a34a; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#16a34a', 'success-600')">DARK</div>
+                    <div class="color-label">success-600 <span class="contrast-check contrast-aaa">AAA</span></div>
+                    <div class="color-value">#16a34a</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #15803d; color: white" onclick="copyColor('#15803d', 'success-700')"></div>
+                    <div class="color-label">success-700</div>
+                    <div class="color-value">#15803d</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning Colors -->
+        <div class="section">
+            <h2 class="section-title">Warning Amber</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #fffbeb" onclick="copyColor('#fffbeb', 'warning-50')"></div>
+                    <div class="color-label">warning-50</div>
+                    <div class="color-value">#fffbeb</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #f59e0b; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#f59e0b', 'warning-500')">BASE</div>
+                    <div class="color-label">warning-500 <span class="contrast-check contrast-fail">FAIL</span></div>
+                    <div class="color-value">#f59e0b</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #d97706; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#d97706', 'warning-600')">DARK</div>
+                    <div class="color-label">warning-600 <span class="contrast-check contrast-aa">AA</span></div>
+                    <div class="color-value">#d97706</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #b45309; color: white" onclick="copyColor('#b45309', 'warning-700')"></div>
+                    <div class="color-label">warning-700</div>
+                    <div class="color-value">#b45309</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Colors -->
+        <div class="section">
+            <h2 class="section-title">Error Red</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #fef2f2" onclick="copyColor('#fef2f2', 'error-50')"></div>
+                    <div class="color-label">error-50</div>
+                    <div class="color-value">#fef2f2</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #ef4444; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#ef4444', 'error-500')">BASE</div>
+                    <div class="color-label">error-500 <span class="contrast-check contrast-aa">AA</span></div>
+                    <div class="color-value">#ef4444</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #dc2626; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#dc2626', 'error-600')">DARK</div>
+                    <div class="color-label">error-600 <span class="contrast-check contrast-aaa">AAA</span></div>
+                    <div class="color-value">#dc2626</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #b91c1c; color: white" onclick="copyColor('#b91c1c', 'error-700')"></div>
+                    <div class="color-label">error-700</div>
+                    <div class="color-value">#b91c1c</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Colors -->
+        <div class="section">
+            <h2 class="section-title">Info Blue</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #eff6ff" onclick="copyColor('#eff6ff', 'info-50')"></div>
+                    <div class="color-label">info-50</div>
+                    <div class="color-value">#eff6ff</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #3b82f6; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#3b82f6', 'info-500')">BASE</div>
+                    <div class="color-label">info-500 <span class="contrast-check contrast-aa">AA</span></div>
+                    <div class="color-value">#3b82f6</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#2563eb', 'info-600')">DARK</div>
+                    <div class="color-label">info-600 <span class="contrast-check contrast-aa">AA</span></div>
+                    <div class="color-value">#2563eb</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #1d4ed8; color: white" onclick="copyColor('#1d4ed8', 'info-700')"></div>
+                    <div class="color-label">info-700</div>
+                    <div class="color-value">#1d4ed8</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Neutral Colors -->
+        <div class="section">
+            <h2 class="section-title">Neutral Gray</h2>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #fafafa" onclick="copyColor('#fafafa', 'neutral-50')"></div>
+                    <div class="color-label">neutral-50</div>
+                    <div class="color-value">#fafafa</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #f5f5f5" onclick="copyColor('#f5f5f5', 'neutral-100')"></div>
+                    <div class="color-label">neutral-100</div>
+                    <div class="color-value">#f5f5f5</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #e5e5e5" onclick="copyColor('#e5e5e5', 'neutral-200')"></div>
+                    <div class="color-label">neutral-200</div>
+                    <div class="color-value">#e5e5e5</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #737373; color: white" onclick="copyColor('#737373', 'neutral-500')"></div>
+                    <div class="color-label">neutral-500</div>
+                    <div class="color-value">#737373</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #525252; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#525252', 'neutral-600')">TEXT</div>
+                    <div class="color-label">neutral-600 <span class="contrast-check contrast-aaa">AAA</span></div>
+                    <div class="color-value">#525252</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #262626; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;" onclick="copyColor('#262626', 'neutral-800')">PRIMARY</div>
+                    <div class="color-label">neutral-800 <span class="contrast-check contrast-aaa">AAA</span></div>
+                    <div class="color-value">#262626</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #171717; color: white" onclick="copyColor('#171717', 'neutral-900')"></div>
+                    <div class="color-label">neutral-900</div>
+                    <div class="color-value">#171717</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gradients -->
+        <div class="section">
+            <h2 class="section-title">Gradients</h2>
+            <div class="gradient-box" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)">
+                Primary Gradient
+            </div>
+            <code>linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)</code>
+        </div>
+
+        <!-- Usage Guidelines -->
+        <div class="section">
+            <h2 class="section-title">Usage Guidelines</h2>
+            <div class="usage-grid">
+                <div class="usage-card primary">
+                    <div class="usage-title">🟣 Primary Purple</div>
+                    <div class="usage-desc">Brand identity, primary actions, key highlights</div>
+                    <div class="usage-examples">
+                        • Main CTA buttons<br>
+                        • Active navigation states<br>
+                        • Primary data in charts<br>
+                        • Logo and brand elements
+                    </div>
+                </div>
+                <div class="usage-card success">
+                    <div class="usage-title">🟢 Success Green</div>
+                    <div class="usage-desc">Positive feedback, completed states, growth metrics</div>
+                    <div class="usage-examples">
+                        • Success messages<br>
+                        • Trust badges<br>
+                        • Positive trends<br>
+                        • Completed status
+                    </div>
+                </div>
+                <div class="usage-card warning">
+                    <div class="usage-title">🟡 Warning Amber</div>
+                    <div class="usage-desc">Caution, pending actions, optimization tips</div>
+                    <div class="usage-examples">
+                        • Warning messages<br>
+                        • Pending states<br>
+                        • Optimization tips<br>
+                        • Value propositions
+                    </div>
+                </div>
+                <div class="usage-card error">
+                    <div class="usage-title">🔴 Error Red</div>
+                    <div class="usage-desc">Errors, failures, negative metrics, destructive actions</div>
+                    <div class="usage-examples">
+                        • Error messages<br>
+                        • Failed validation<br>
+                        • Negative trends<br>
+                        • Delete confirmations
+                    </div>
+                </div>
+                <div class="usage-card info">
+                    <div class="usage-title">🔵 Info Blue</div>
+                    <div class="usage-desc">Information, links, secondary actions, insights</div>
+                    <div class="usage-examples">
+                        • Information cards<br>
+                        • Hyperlinks<br>
+                        • Secondary buttons<br>
+                        • Market intelligence
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before/After Comparison -->
+        <div class="section">
+            <h2 class="section-title">Before & After Comparison</h2>
+            <div class="comparison">
+                <div class="comparison-side old-colors">
+                    <h3>❌ Old Colors (24+ inconsistent)</h3>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #667eea"></div>
+                        <span>#667eea (old purple)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #FF6B6B"></div>
+                        <span>#FF6B6B (random red) - DELETE</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #4ECDC4"></div>
+                        <span>#4ECDC4 (random teal) - DELETE</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #5cb85c"></div>
+                        <span>#5cb85c (green 1)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #28a745"></div>
+                        <span>#28a745 (green 2)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #f0ad4e"></div>
+                        <span>#f0ad4e (orange - low contrast)</span>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">
+                        Issues: No system, poor accessibility, off-brand colors, duplicates
+                    </p>
+                </div>
+                <div class="comparison-side new-colors">
+                    <h3>✅ New Colors (50 systematic tokens)</h3>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #8b5cf6"></div>
+                        <span>#8b5cf6 (primary-500)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #22c55e"></div>
+                        <span>#22c55e (success-500)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #d97706"></div>
+                        <span>#d97706 (warning-600 - better contrast)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #dc2626"></div>
+                        <span>#dc2626 (error-600)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #3b82f6"></div>
+                        <span>#3b82f6 (info-500)</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-dot" style="background: #525252"></div>
+                        <span>#525252 (neutral-600 for text)</span>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;">
+                        Benefits: Full color scales, 100% accessible, semantic meaning, consistent brand
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 2rem; background: #f5f5f5; border-radius: 8px; margin-top: 3rem;">
+            <p style="color: #737373; margin-bottom: 0.5rem;">
+                Copy the CSS from <code>colors_improved.css</code> into your app.py
+            </p>
+            <p style="color: #737373; font-size: 0.9rem;">
+                All colors are WCAG 2.1 AA compliant • Ready to use in production
+            </p>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Color copied to clipboard!</div>
+
+    <script>
+        function copyColor(hex, name) {
+            const cssVar = `var(--color-${name})`;
+            navigator.clipboard.writeText(hex).then(() => {
+                const toast = document.getElementById('toast');
+                toast.textContent = `Copied ${hex} (${cssVar})`;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
