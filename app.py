@@ -683,8 +683,8 @@ def load_models():
     try:
         # Get the directory where this script is located
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        pipe_path = os.path.join(script_dir, 'pipe.pkl')
-        df_path = os.path.join(script_dir, 'df.pkl')
+        pipe_path = os.path.join(script_dir, 'models', 'pipe.pkl')
+        df_path = os.path.join(script_dir, 'models', 'df.pkl')
 
         # Check if files exist
         if not os.path.exists(pipe_path) or not os.path.exists(df_path):
