@@ -447,16 +447,21 @@ st.markdown("""
 def load_models():
     """Load the ML model and data with error handling"""
     try:
+        # Get the directory where this script is located
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        pipe_path = os.path.join(script_dir, 'pipe.pkl')
+        df_path = os.path.join(script_dir, 'df.pkl')
+
         # Check if files exist
-        if not os.path.exists('pipe.pkl') or not os.path.exists('df.pkl'):
-            st.warning("⚠️ Model files not found. Using demo mode with sample data.")
+        if not os.path.exists(pipe_path) or not os.path.exists(df_path):
+            st.warning(f"⚠️ Model files not found at {script_dir}. Using demo mode with sample data.")
             # Create sample data for demo
             companies = ['Dell', 'HP', 'Lenovo', 'ASUS', 'Apple', 'Acer', 'MSI']
             types = ['Notebook', 'Gaming', 'Ultrabook', 'Workstation']
             cpus = ['Intel Core i5', 'Intel Core i7', 'Intel Core i9', 'AMD Ryzen 5', 'AMD Ryzen 7']
             gpus = ['Intel HD Graphics', 'Nvidia GeForce GTX 1650', 'Nvidia GeForce RTX 3060', 'AMD Radeon']
             os_list = ['Windows 10', 'Windows 11', 'macOS', 'Linux', 'No OS']
-            
+
             # Create a mock dataframe
             df = pd.DataFrame({
                 'Company': companies * 10,
@@ -465,11 +470,11 @@ def load_models():
                 'Gpu_Brand': gpus * 17 + gpus[:2],
                 'os': os_list * 14
             })
-            
+
             return None, df
-        
-        pipe = pickle.load(open('pipe.pkl', 'rb'))
-        df = pickle.load(open('df.pkl', 'rb'))
+
+        pipe = pickle.load(open(pipe_path, 'rb'))
+        df = pickle.load(open(df_path, 'rb'))
         return pipe, df
     except Exception as e:
         st.error(f"Error loading models: {str(e)}")
