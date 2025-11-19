@@ -1,9 +1,9 @@
-[theme]
-primaryColor = "#8b5cf6"
-backgroundColor = "#ffffff"
-secondaryBackgroundColor = "#f5f3ff"
-textColor = "#262626"
-font = "sans serif"
+# [theme] - Commented out to allow dark mode toggle
+# primaryColor = "#8b5cf6"
+# backgroundColor = "#ffffff"
+# secondaryBackgroundColor = "#f5f3ff"
+# textColor = "#262626"
+# font = "sans serif"
 
 [server]
 headless = true
