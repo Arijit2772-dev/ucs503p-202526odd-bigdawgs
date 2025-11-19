@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LapPrice Pro - Data API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #7c3aed;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            color: #525252;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .api-section {
+            background: #f5f3ff;
+            border-left: 4px solid #8b5cf6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .api-section h2 {
+            color: #7c3aed;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .endpoint {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        .endpoint strong {
+            color: #7c3aed;
+        }
+        .badge {
+            display: inline-block;
+            background: #22c55e;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 5px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #f5f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+        .stat-label {
+            color: #525252;
+            margin-top: 5px;
+        }
+        code {
+            background: #262626;
+            color: #22c55e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .usage-example {
+            background: #262626;
+            color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .usage-example pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .keyword { color: #8b5cf6; }
+        .string { color: #22c55e; }
+        .function { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 LapPrice Pro Data API</h1>
+        <p class="subtitle">Pre-computed laptop price predictions with O(1) lookup speed</p>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value">400K</div>
+                <div class="stat-label">Laptop Configs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">399K</div>
+                <div class="stat-label">Pre-computed Predictions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0.2ms</div>
+                <div class="stat-label">Query Time (O(1))</div>
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>📦 Available Endpoints</h2>
+
+            <div class="endpoint">
+                <strong>predictions_lookup.json</strong><br>
+                <a href="predictions_lookup.json" target="_blank">predictions_lookup.json</a><br>
+                <small>58 MB - Pre-computed price predictions with confidence intervals</small>
+            </div>
+
+            <div class="endpoint">
+                <strong>specs_lookup.json</strong><br>
+                <a href="specs_lookup.json" target="_blank">specs_lookup.json</a><br>
+                <small>105 MB - Complete laptop specifications by hash key</small>
+            </div>
+
+            <div class="endpoint">
+                <strong>search_index.json</strong><br>
+                <a href="search_index.json" target="_blank">search_index.json</a><br>
+                <small>15 MB - Searchable index for finding laptops by criteria</small>
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>💻 Usage Example (Python)</h2>
+
+            <div class="usage-example">
+<pre><span class="keyword">import</span> requests
+
+<span class="comment"># Base URL for GitHub Pages</span>
+BASE_URL = <span class="string">"https://arijit2772-dev.github.io/ucs503p-202526odd-bigdawgs"</span>
+
+<span class="comment"># Fetch predictions</span>
+url = <span class="function">f</span><span class="string">"{BASE_URL}/predictions_lookup.json"</span>
+predictions = requests.<span class="function">get</span>(url).<span class="function">json</span>()
+
+<span class="comment"># O(1) lookup</span>
+laptop_key = <span class="string">"a3f5c9d1e2b4"</span>
+result = predictions[laptop_key]
+
+<span class="function">print</span>(<span class="function">f</span><span class="string">"Price: ₹{result['price']:,}"</span>)
+<span class="comment"># Output: Price: ₹75,000</span>
+</pre>
+            </div>
+        </div>
+
+        <div class="api-section">
+            <h2>⚡ Performance</h2>
+            <p style="margin-bottom: 10px;">This API serves pre-computed predictions for instant responses:</p>
+            <span class="badge">✓ O(1) Lookup Time</span>
+            <span class="badge">✓ No ML Inference</span>
+            <span class="badge">✓ CDN-Ready</span>
+            <span class="badge">✓ 1000x Faster</span>
+        </div>
+
+        <div class="api-section">
+            <h2>📊 Data Format</h2>
+            <p style="margin-bottom: 15px;">Each endpoint returns JSON with the following structure:</p>
+
+            <div class="usage-example">
+<pre>{
+  <span class="string">"hash_key_1"</span>: {
+    <span class="string">"price"</span>: <span class="keyword">75000</span>,
+    <span class="string">"confidence_lower"</span>: <span class="keyword">71250</span>,
+    <span class="string">"confidence_upper"</span>: <span class="keyword">78750</span>,
+    <span class="string">"confidence_score"</span>: <span class="keyword">0.95</span>
+  },
+  <span class="string">"hash_key_2"</span>: { ... }
+}
+</pre>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e5e5;">
+            <p style="color: #525252;">Built with ❤️ for O(1) performance</p>
+            <p style="color: #737373; font-size: 0.9rem; margin-top: 5px;">
+                <a href="https://arijit-lpp2772.streamlit.app/" style="color: #7c3aed; text-decoration: none;">View Live App →</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

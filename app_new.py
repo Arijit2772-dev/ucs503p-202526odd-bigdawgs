@@ -1,5 +1,4 @@
 import streamlit as st
-import pickle
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
@@ -9,10 +8,26 @@ import json
 import hashlib
 import os
 import time
+import requests  # For fetching data from GitHub Pages
+
+# ============================================================================
+# CONFIGURATION - GitHub Pages URLs
+# ============================================================================
+
+# GitHub Pages base URL for pre-computed data
+GITHUB_PAGES_BASE = "https://arijit2772-dev.github.io/ucs503p-202526odd-bigdawgs"
 
 # ============================================================================
 # HELPER FUNCTIONS - Define all functions at the top
 # ============================================================================
+
+def create_laptop_hash(company, type_name, ram, cpu, gpu, ssd, hdd, os, screen_size, weight, resolution, touchscreen, ips):
+    """Create a unique hash key for laptop configuration"""
+    # Create a normalized string from specs
+    key_string = f"{company}_{type_name}_{ram}GB_{cpu}_{gpu}_{ssd}SSD_{hdd}HDD_{os}_{screen_size}in_{weight}kg_{resolution}_touch{touchscreen}_ips{ips}"
+    # Generate MD5 hash
+    hash_key = hashlib.md5(key_string.encode()).hexdigest()[:12]
+    return hash_key
 
 
 
@@ -677,72 +692,65 @@ st.markdown("""
 # LOAD MODELS AND DATA
 # ============================================================================
 
-@st.cache_resource
-def load_models():
-    """Load the ML model and data with error handling"""
+@st.cache_data(show_spinner="🌐 Loading data from GitHub Pages...")
+def load_data_from_github_pages():
+    """Load pre-computed predictions from GitHub Pages - O(1) lookup approach!"""
     try:
-        # Get the directory where this script is located
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        pipe_path = os.path.join(script_dir, 'models', 'pipe.pkl')
-        df_path = os.path.join(script_dir, 'models', 'df.pkl')
+        # Fetch predictions lookup (58MB - under GitHub's 100MB limit)
+        predictions_url = f"{GITHUB_PAGES_BASE}/predictions_lookup.json"
 
-        # Check if files exist
-        if not os.path.exists(pipe_path) or not os.path.exists(df_path):
-            st.warning(f"⚠️ Model files not found at {script_dir}. Using demo mode with sample data.")
-            # Create sample data for demo
-            companies = ['Dell', 'HP', 'Lenovo', 'ASUS', 'Apple', 'Acer', 'MSI']
-            types = ['Notebook', 'Gaming', 'Ultrabook', 'Workstation']
-            cpus = ['Intel Core i5', 'Intel Core i7', 'Intel Core i9', 'AMD Ryzen 5', 'AMD Ryzen 7']
-            gpus = ['Intel HD Graphics', 'Nvidia GeForce GTX 1650', 'Nvidia GeForce RTX 3060', 'AMD Radeon']
-            os_list = ['Windows 10', 'Windows 11', 'macOS', 'Linux', 'No OS']
+        st.info("📡 Fetching pre-computed predictions from GitHub Pages (O(1) lookup system)...")
 
-            # Create a mock dataframe
-            df = pd.DataFrame({
-                'Company': companies * 10,
-                'TypeName': types * 17 + types[:2],
-                'Cpu brand': cpus * 14,
-                'Gpu_Brand': gpus * 17 + gpus[:2],
-                'os': os_list * 14
-            })
+        # Load predictions
+        response = requests.get(predictions_url, timeout=60)
+        response.raise_for_status()
+        predictions = response.json()
 
-            return None, df
+        # Standard dropdown options (common laptop specs)
+        options = {
+            'Company': ['Acer', 'Apple', 'ASUS', 'Dell', 'HP', 'Lenovo', 'MSI', 'Microsoft', 'Razer', 'Samsung'],
+            'TypeName': ['Notebook', 'Ultrabook', 'Gaming', 'Workstation', '2 in 1 Convertible'],
+            'Cpu brand': ['Intel Core i3', 'Intel Core i5', 'Intel Core i7', 'Intel Core i9',
+                         'AMD Ryzen 3', 'AMD Ryzen 5', 'AMD Ryzen 7', 'AMD Ryzen 9',
+                         'Intel Celeron', 'Intel Pentium'],
+            'Gpu_Brand': ['Intel HD Graphics', 'Intel UHD Graphics', 'Intel Iris Xe',
+                         'Nvidia GeForce GTX 1650', 'Nvidia GeForce GTX 1660 Ti',
+                         'Nvidia GeForce RTX 3050', 'Nvidia GeForce RTX 3060',
+                         'Nvidia GeForce RTX 3070', 'Nvidia GeForce RTX 4060',
+                         'AMD Radeon Graphics', 'AMD Radeon RX 6600M'],
+            'os': ['Windows 10', 'Windows 11', 'macOS', 'Linux', 'Chrome OS', 'No OS']
+        }
 
-        pipe = pickle.load(open(pipe_path, 'rb'))
-        df = pickle.load(open(df_path, 'rb'))
-        return pipe, df
-    except Exception as e:
-        st.markdown(f"""
-            <div class="feature-card feature-card-orange" style="border-left-color: #dc2626;">
-                <h4 style="color: #dc2626;">⚠️ Model Loading Issue</h4>
-                <p>We couldn't load the AI model, but don't worry! We're running in <strong>demo mode</strong>
-                with realistic price estimates.</p>
-                <details style="margin-top: 1rem;">
-                    <summary style="cursor: pointer; color: #525252;">Technical details</summary>
-                    <code style="display: block; background: #f5f5f5; padding: 0.5rem; margin-top: 0.5rem; border-radius: 5px;">
-                        {str(e)}
-                    </code>
-                </details>
-            </div>
-        """, unsafe_allow_html=True)
+        st.success(f"✅ Loaded {len(predictions):,} pre-computed predictions from GitHub Pages!")
 
-        # Return sample data for demo
-        companies = ['Dell', 'HP', 'Lenovo', 'ASUS', 'Apple', 'Acer', 'MSI']
-        types = ['Notebook', 'Gaming', 'Ultrabook', 'Workstation']
-        cpus = ['Intel Core i5', 'Intel Core i7', 'Intel Core i9', 'AMD Ryzen 5', 'AMD Ryzen 7']
-        gpus = ['Intel HD Graphics', 'Nvidia GeForce GTX 1650', 'Nvidia GeForce RTX 3060', 'AMD Radeon']
-        os_list = ['Windows 10', 'Windows 11', 'macOS', 'Linux', 'No OS']
+        return predictions, options
 
-        df = pd.DataFrame({
-            'Company': companies * 10,
-            'TypeName': types * 17 + types[:2],
-            'Cpu brand': cpus * 14,
-            'Gpu_Brand': gpus * 17 + gpus[:2],
-            'os': os_list * 14
-        })
+    except requests.exceptions.RequestException as e:
+        st.error(f"""
+            ⚠️ **Could not fetch data from GitHub Pages**
 
-        return None, df
+            Error: {str(e)}
 
-pipe, df = load_models()
+            **Please ensure:**
+            1. GitHub Pages is enabled in repository settings
+            2. JSON files are deployed to: {GITHUB_PAGES_BASE}
+            3. You have internet connection
+
+            **Falling back to demo mode with sample data...**
+        """)
+
+        # Fallback sample data
+        options = {
+            'Company': ['Dell', 'HP', 'Lenovo', 'ASUS', 'Apple', 'Acer', 'MSI'],
+            'TypeName': ['Notebook', 'Gaming', 'Ultrabook', 'Workstation'],
+            'Cpu brand': ['Intel Core i5', 'Intel Core i7', 'Intel Core i9', 'AMD Ryzen 5', 'AMD Ryzen 7'],
+            'Gpu_Brand': ['Intel HD Graphics', 'Nvidia GeForce GTX 1650', 'Nvidia GeForce RTX 3060', 'AMD Radeon'],
+            'os': ['Windows 10', 'Windows 11', 'macOS', 'Linux', 'No OS']
+        }
+
+        return {}, options
+
+predictions_data, dropdown_options = load_data_from_github_pages()
 
 # ============================================================================
 # INITIALIZE SESSION STATE
@@ -938,10 +946,10 @@ with tab1:
         preset = st.session_state.preset_config
 
         with spec_col1:
-            company = st.selectbox('Brand', df['Company'].unique() if df is not None else ['Dell', 'HP', 'Lenovo'])
+            company = st.selectbox('Brand', dropdown_options['Company'])
 
             # Get available types and set default
-            available_types = df['TypeName'].unique() if df is not None else ['Notebook', 'Gaming']
+            available_types = dropdown_options['TypeName']
             type_default = preset['type'] if preset and preset['type'] in available_types else available_types[0]
             type_index = list(available_types).index(type_default) if type_default in available_types else 0
             type_name = st.selectbox('Type', available_types, index=type_index)
@@ -953,9 +961,9 @@ with tab1:
             ram = st.selectbox('RAM (GB)', ram_options, index=ram_index)
 
         with spec_col2:
-            cpu = st.selectbox('Processor', df['Cpu brand'].unique() if df is not None else ['Intel Core i5', 'Intel Core i7'])
-            gpu = st.selectbox('Graphics', df['Gpu_Brand'].unique() if df is not None else ['Intel HD Graphics', 'Nvidia GTX'])
-            os = st.selectbox('OS', df['os'].unique() if df is not None else ['Windows 10', 'Windows 11'])
+            cpu = st.selectbox('Processor', dropdown_options['Cpu brand'])
+            gpu = st.selectbox('Graphics', dropdown_options['Gpu_Brand'])
+            os = st.selectbox('OS', dropdown_options['os'])
 
         with spec_col3:
             screen_default = preset['screen_size'] if preset else 15.6
@@ -1096,39 +1104,29 @@ if predict_button or predict_button_sticky:
         progress_bar.progress(20)
         time.sleep(0.3)
 
-        # Stage 2: Running AI model
-        status_text.text("🧠 Running AI prediction model...")
+        # Stage 2: O(1) Lookup from GitHub Pages data
+        status_text.text("⚡ O(1) hash lookup (instant!)...")
         progress_bar.progress(50)
 
-        if pipe is not None:
-            # Real prediction with loaded model
-            touchscreen_val = 1 if touchscreen == 'Yes' else 0
-            ips_val = 1 if ips == 'Yes' else 0
+        # Create hash key from user specs
+        touchscreen_val = 1 if touchscreen == 'Yes' else 0
+        ips_val = 1 if ips == 'Yes' else 0
 
-            X_res = int(resolution.split('x')[0])
-            Y_res = int(resolution.split('x')[1])
-            ppi = ((X_res**2) + (Y_res**2))**0.5 / screen_size
+        laptop_key = create_laptop_hash(
+            company, type_name, ram, cpu, gpu, ssd, hdd, os,
+            screen_size, weight, resolution, touchscreen_val, ips_val
+        )
 
-            query = pd.DataFrame({
-                'Company': [company],
-                'TypeName': [type_name],
-                'Ram': [ram],
-                'Weight': [weight],
-                'Touchscreen': [touchscreen_val],
-                'Ips': [ips_val],
-                'ppi': [ppi],
-                'Cpu brand': [cpu],
-                'HDD': [hdd],
-                'SSD': [ssd],
-                'Gpu_Brand': [gpu],
-                'os': [os]
-            })
-
-            # Make prediction
-            log_price = pipe.predict(query)[0]
-            base_price = int(np.exp(log_price))
+        # O(1) Lookup!
+        if laptop_key in predictions_data:
+            # Found exact match in pre-computed predictions!
+            prediction = predictions_data[laptop_key]
+            base_price = int(prediction.get('price', 0))
+            st.success(f"✅ Found exact match! Hash: {laptop_key}")
         else:
-            # Demo mode - generate realistic price based on specs
+            # Fallback: Generate estimate based on specs (demo mode)
+            st.warning(f"⚠️ Configuration not in database (Hash: {laptop_key}). Using estimation...")
+
             base_price = 30000  # Base price
 
             # Add price based on specs
@@ -1588,13 +1586,22 @@ with st.expander("📊 Developer Metrics"):
     with col4:
         st.metric("User Satisfaction", "4.8/5", "+0.2")
 
-# Display Demo Mode Warning if applicable
-if pipe is None:
+# Display GitHub Pages Status
+if not predictions_data:
     st.warning("""
-        ⚠️ **Demo Mode Active**: Model files (pipe.pkl, df.pkl) not found.
-        Using simulated predictions for demonstration purposes.
+        ⚠️ **GitHub Pages Data Not Loaded**
 
-        To use the real model:
-        1. Ensure pipe.pkl and df.pkl are in the same directory as this script
-        2. Restart the application
+        The app is using fallback mode with estimated prices.
+
+        **To enable O(1) lookup:**
+        1. Enable GitHub Pages in repository settings
+        2. Deploy JSON files to GitHub Pages
+        3. Restart the application
+    """)
+else:
+    st.info(f"""
+        ✅ **O(1) Lookup System Active**
+
+        Using pre-computed predictions from GitHub Pages.
+        {len(predictions_data):,} laptop configurations ready for instant lookup!
     """)
